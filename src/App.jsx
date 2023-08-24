@@ -1,17 +1,16 @@
-import './App.css'
-import NetFeeRegForm from './Components/NetFeeRegForm'
-// import FormClassCompo from './Components/FormClassCompo'
-// import FormFunctionCompo from './Components/FormFunctionCompo'
+import { Outlet } from "react-router-dom";
+import "./App.css";
+import Header from "./Components/Header";
 
 function App() {
-
   return (
     <>
-      {/* <FormFunctionCompo></FormFunctionCompo>
-      <FormClassCompo></FormClassCompo> */}
-      <NetFeeRegForm></NetFeeRegForm>
+      <Header></Header>
+      <Outlet>
+        
+      </Outlet>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

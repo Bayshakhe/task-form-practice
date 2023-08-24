@@ -46,8 +46,8 @@ const NetFeeRegForm = () => {
 
   return (
     <div className="container mx-auto">
-      <h2 className="text-center font-semibold text-4xl m-6">
-        Registration Form
+      <h2 className="text-center font-semibold text-4xl m-6 mb-16 underline">
+        Registration Form (Funtion Component)
       </h2>
       <form onSubmit={handleSubmit} action="" className="max-w-xl mx-auto">
         <div className="mb-5">

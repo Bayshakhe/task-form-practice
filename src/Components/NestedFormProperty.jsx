@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class FormClassCompo extends Component {
+class NestedFormProperty extends Component {
   state = {
     instituteName: "",
     adminName: "",
@@ -10,45 +10,98 @@ class FormClassCompo extends Component {
     division: "",
     address: "",
     packageName: "",
-    reference: { referenceName: "", referenceMobile: "" },
+    reference: {
+      referenceName: "",
+      referenceMobile: "",
+      referenceaddress: {
+        referenceDistrict: {
+          referenceUpazila: {
+            referenceVillage: "",
+            referenceUnion: "",
+            referencePostOffice: "",
+          },
+          referenceCode: "",
+        },
+        referenceZipCode: "",
+      },
+    },
     customer: [],
   };
 
   handleChange = (e) => {
-    if(e.target.name === 'referenceName'){
-        this.setState({
+    if (e.target.name === "referenceName") {
+      this.setState({
         ...this.state,
-        reference:{
-            ...this.state.reference,
-            referenceName: e.target.value
-        }
-    })
+        reference: {
+          ...this.state.reference,
+          referenceName: e.target.value,
+        },
+      });
+    } else if (e.target.name === "referenceMobile") {
+      this.setState({
+        ...this.state,
+        reference: {
+          ...this.state.reference,
+          referenceMobile: e.target.value,
+        },
+      });
+    } else if (e.target.name === "referenceZipCode") {
+      this.setState({
+        ...this.state,
+        reference: {
+          ...this.state.reference,
+          referenceaddress: {
+            ...this.state.reference.referenceaddress,
+            referenceZipCode: e.target.value,
+          },
+        },
+      });
+    } else if (e.target.name === "referenceCode") {
+      this.setState({
+        ...this.state,
+        reference: {
+          ...this.state.reference,
+          referenceaddress: {
+            ...this.state.reference.referenceaddress,
+            referenceDistrict: {
+              ...this.state.reference.referenceaddress.referenceDistrict,
+              referenceCode: e.target.value
+            },
+          },
+        },
+      });
+    } else if (e.target.name === "referenceVillage" || e.target.name === "referenceUnion" || e.target.name === "referencePostOffice") {
+      this.setState({
+        ...this.state,
+        reference: {
+          ...this.state.reference,
+          referenceaddress: {
+            ...this.state.reference.referenceaddress,
+            referenceDistrict: {
+              ...this.state.reference.referenceaddress.referenceDistrict,
+              referenceUpazila: {
+                ...this.state.reference.referenceaddress.referenceDistrict.referenceUpazila,
+                [e.target.name]: e.target.value
+              }
+            },
+          },
+        },
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        [e.target.name]: e.target.value,
+      });
     }
-    else if(e.target.name === 'referenceMobile'){
-        this.setState({
-            ...this.state,
-            reference:{
-                ...this.state.reference,
-                referenceMobile: e.target.value
-            }
-        })
-    }
-    else{
-        this.setState({
-            ...this.state,
-            [e.target.name]: e.target.value
-        })
-    }
-
-  }
+  };
   handleCustomer = (e) => {
-    console.log(e)
-  }
+    // console.log(e)
+  };
 
   handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(this.state)
-  }
+    e.preventDefault();
+    console.log(this.state);
+  };
   render() {
     return (
       <div className="container mx-auto">
@@ -113,18 +166,33 @@ class FormClassCompo extends Component {
               Gender:
             </label>{" "}
             <div>
-              <input 
-              onChange={this.handleChange} type="radio" name="gender" value="male" className="" />
+              <input
+                onChange={this.handleChange}
+                type="radio"
+                name="gender"
+                value="male"
+                className=""
+              />
               Male
             </div>
             <div>
               <input
-              onChange={this.handleChange} type="radio" name="gender" value="female" className="" />
+                onChange={this.handleChange}
+                type="radio"
+                name="gender"
+                value="female"
+                className=""
+              />
               Female
             </div>
             <div>
               <input
-              onChange={this.handleChange} type="radio" name="gender" value="other" className="" />
+                onChange={this.handleChange}
+                type="radio"
+                name="gender"
+                value="other"
+                className=""
+              />
               Other
             </div>
           </div>
@@ -188,8 +256,8 @@ class FormClassCompo extends Component {
                 <input
                   type="checkbox"
                   value="PPPOE"
-                    checked={this.state.customer.includes("PPPOE")}
-                    onChange={this.handleCustomer}
+                  checked={this.state.customer.includes("PPPOE")}
+                  onChange={this.handleCustomer}
                 />
                 PPPOE
               </div>
@@ -197,8 +265,8 @@ class FormClassCompo extends Component {
                 <input
                   type="checkbox"
                   value="Static"
-                    checked={this.state.customer.includes("Static")}
-                    onChange={this.handleCustomer}
+                  checked={this.state.customer.includes("Static")}
+                  onChange={this.handleCustomer}
                 />
                 Static
               </div>
@@ -206,8 +274,8 @@ class FormClassCompo extends Component {
                 <input
                   type="checkbox"
                   value="Hotspot"
-                    checked={this.state.customer.includes("Hotspot")}
-                    onChange={this.handleCustomer}
+                  checked={this.state.customer.includes("Hotspot")}
+                  onChange={this.handleCustomer}
                 />
                 Hotspot
               </div>
@@ -220,7 +288,7 @@ class FormClassCompo extends Component {
               </label>{" "}
               <br />
               <input
-              onChange={this.handleChange}
+                onChange={this.handleChange}
                 type="text"
                 name="referenceName"
                 id="referenceName"
@@ -236,16 +304,90 @@ class FormClassCompo extends Component {
               </label>{" "}
               <br />
               <input
-              onChange={this.handleChange}
+                onChange={this.handleChange}
                 type="tel"
                 name="referenceMobile"
                 id="referenceMobile"
                 className="input input-bordered input-info w-full max-w-lg"
               />
             </div>
+            <div className="mb-5">
+              <label
+                htmlFor="referenceZipCode"
+                className="font-semibold text-lg"
+              >
+                Reference ZipCode:
+              </label>{" "}
+              <br />
+              <input
+                onChange={this.handleChange}
+                type="tel"
+                name="referenceZipCode"
+                id="referenceZipCode"
+                className="input input-bordered input-info w-full max-w-lg"
+              />
+            </div>
+            <div className="mb-5">
+              <label htmlFor="referenceCode" className="font-semibold text-lg">
+                Reference Code:
+              </label>{" "}
+              <br />
+              <input
+                onChange={this.handleChange}
+                type="tel"
+                name="referenceCode"
+                id="referenceCode"
+                className="input input-bordered input-info w-full max-w-lg"
+              />
+            </div>
+            <div className="mb-5">
+              <label
+                htmlFor="referenceVillage"
+                className="font-semibold text-lg"
+              >
+                Reference Village:
+              </label>{" "}
+              <br />
+              <input
+                onChange={this.handleChange}
+                type="tel"
+                name="referenceVillage"
+                id="referenceVillage"
+                className="input input-bordered input-info w-full max-w-lg"
+              />
+            </div>
+            <div className="mb-5">
+              <label htmlFor="referenceUnion" className="font-semibold text-lg">
+                Reference Union:
+              </label>{" "}
+              <br />
+              <input
+                onChange={this.handleChange}
+                type="tel"
+                name="referenceUnion"
+                id="referenceUnion"
+                className="input input-bordered input-info w-full max-w-lg"
+              />
+            </div>
+            <div className="mb-5">
+              <label
+                htmlFor="referencePostOffice"
+                className="font-semibold text-lg"
+              >
+                Reference PostOffice:
+              </label>{" "}
+              <br />
+              <input
+                onChange={this.handleChange}
+                type="tel"
+                name="referencePostOffice"
+                id="referencePostOffice"
+                className="input input-bordered input-info w-full max-w-lg"
+              />
+            </div>
           </div>
           <input
-          onClick={this.handleSubmit}
+            onClick={this.handleSubmit}
             type="submit"
             value="Register"
             className="btn btn-info hover:bg-sky-600 w-[200px] text-white"
@@ -259,4 +401,4 @@ class FormClassCompo extends Component {
   }
 }
 
-export default FormClassCompo;
+export default NestedFormProperty;
