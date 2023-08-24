@@ -1,20 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 
 const NetFeeRegForm = () => {
+  const [customer, setCustomer] = useState([]);
+
+  const handleCustomer = (e) => {
+    if (e.target.checked) {
+      setCustomer([...customer, e.target.value]);
+    } else {
+      const remaining = customer.filter(
+        (element) => element !== e.target.value
+      );
+      setCustomer(remaining);
+    }
+  };
+  const handleClear = () => {};
+
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const instituteName = e.target.instituteName.value;
     const adminName = e.target.adminName.value;
     const mobile = e.target.mobile.value;
     const email = e.target.email.value;
+    const gender = e.target.gender.value;
     const division = e.target.division.value;
     const address = e.target.address.value;
     const packageName = e.target.package.value;
     const referenceName = e.target.referenceName.value;
     const referenceMobile = e.target.referenceMobile.value;
-    const registerObject = {instituteName,adminName, mobile, email, division,address, packageName, reference: {referenceName, referenceMobile}}
-    console.log(registerObject)
-  }
+
+    const registerObject = {
+      instituteName,
+      adminName,
+      mobile,
+      email,
+      gender,
+      division,
+      address,
+      packageName,
+      reference: { referenceName, referenceMobile },
+      customer,
+    };
+
+    console.log(registerObject);
+  };
+
   return (
     <div className="container mx-auto">
       <h2 className="text-center font-semibold text-4xl m-6">
@@ -73,6 +102,23 @@ const NetFeeRegForm = () => {
             className="input input-bordered input-info w-full max-w-lg"
           />
         </div>
+        <div className="mb-5 flex items-center gap-5">
+          <label htmlFor="gender" className="font-semibold text-lg">
+            Gender:
+          </label>{" "}
+          <div>
+            <input type="radio" name="gender" value="male" className="" />
+            Male
+          </div>
+          <div>
+            <input type="radio" name="gender" value="female" className="" />
+            Female
+          </div>
+          <div>
+            <input type="radio" name="gender" value="other" className="" />
+            Other
+          </div>
+        </div>
         <div className="mb-5">
           <label htmlFor="division" className="font-semibold text-lg">
             Select Division:
@@ -125,13 +171,38 @@ const NetFeeRegForm = () => {
           <label htmlFor="customer" className="font-semibold text-lg">
             Type of Customer:
           </label>{" "}
-          <br />
-          <input type="checkbox" name="PPPOE" id="" />
-          PPPOE
-          <input type="checkbox" name="Static" id="" />
-          Static
-          <input type="checkbox" name="Hotspot" id="" />
-          Hotspot
+          <div className="flex gap-5">
+            <div>
+              <input
+                type="checkbox"
+                value="PPPOE"
+                id=""
+                checked={customer.includes("PPPOE")}
+                onChange={handleCustomer}
+              />
+              PPPOE
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                value="Static"
+                id=""
+                checked={customer.includes("Static")}
+                onChange={handleCustomer}
+              />
+              Static
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                value="Hotspot"
+                id=""
+                checked={customer.includes("Hotspot")}
+                onChange={handleCustomer}
+              />
+              Hotspot
+            </div>
+          </div>
         </div>
         <div className="border max-w-lg p-5 mb-5">
           <div className="mb-5">
@@ -161,8 +232,19 @@ const NetFeeRegForm = () => {
             />
           </div>
         </div>
-        <input type="submit" name="" id="" value='Register' className="btn btn-info hover:bg-sky-600 w-[200px] text-white"/>
-        <button className="btn bg-gray-400 hover:bg-gray-600 w-[200px] text-white ml-3">Clear</button>
+        <input
+          type="submit"
+          name=""
+          id=""
+          value="Register"
+          className="btn btn-info hover:bg-sky-600 w-[200px] text-white"
+        />
+        <button
+          onClick={handleClear}
+          className="btn bg-gray-400 hover:bg-gray-600 w-[200px] text-white ml-3"
+        >
+          Clear
+        </button>
       </form>
     </div>
   );
